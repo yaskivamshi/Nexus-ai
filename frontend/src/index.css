@@ -1,0 +1,342 @@
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── Brand & surface tokens ── */
+    --background:        0 0% 100%;
+    --foreground:        222.2 84% 4.9%;
+    --card:              0 0% 100%;
+    --card-foreground:   222.2 84% 4.9%;
+    --popover:           0 0% 100%;
+    --popover-foreground:222.2 84% 4.9%;
+
+    /* ── Interactive ── */
+    --primary:           221.2 83.2% 53.3%;
+    --primary-foreground:210 40% 98%;
+    --secondary:         210 40% 96.1%;
+    --secondary-foreground:222.2 47.4% 11.2%;
+    --muted:             210 40% 96.1%;
+    --muted-foreground:  215.4 16.3% 46.9%;
+    --accent:            210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    /* ── Borders & inputs ── */
+    --border:            214.3 31.8% 91.4%;
+    --input:             214.3 31.8% 91.4%;
+    --ring:              221.2 83.2% 53.3%;
+    --radius:            0.75rem;
+
+    /* ── Nexus AI brand palette (light) ── */
+    --nx-bg:             #ffffff;
+    --nx-bg-secondary:   #f4f4f5;
+    --nx-bg-tertiary:    #e4e4e7;
+    --nx-surface:        #fafafa;
+    --nx-border:         #e4e4e7;
+    --nx-border-strong:  #a1a1aa;
+
+    --nx-text-primary:   #09090b;
+    --nx-text-secondary: #52525b;
+    --nx-text-muted:     #a1a1aa;
+
+    --nx-accent:         #3b82f6;
+    --nx-accent-hover:   #2563eb;
+    --nx-accent-subtle:  #eff6ff;
+
+    --nx-success:        #22c55e;
+    --nx-success-subtle: #f0fdf4;
+    --nx-warning:        #f59e0b;
+    --nx-warning-subtle: #fffbeb;
+    --nx-danger:         #ef4444;
+    --nx-danger-subtle:  #fef2f2;
+  }
+
+  /* ── Dark mode (matches your existing obsidian theme) ── */
+  .dark {
+    --background:        222.2 84% 4.9%;
+    --foreground:        210 40% 98%;
+    --card:              222.2 84% 4.9%;
+    --card-foreground:   210 40% 98%;
+    --primary:           217.2 91.2% 59.8%;
+    --primary-foreground:222.2 47.4% 11.2%;
+    --secondary:         217.2 32.6% 17.5%;
+    --secondary-foreground:210 40% 98%;
+    --muted:             217.2 32.6% 17.5%;
+    --muted-foreground:  215 20.2% 65.1%;
+    --accent:            217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --border:            217.2 32.6% 17.5%;
+    --input:             217.2 32.6% 17.5%;
+    --ring:              224.3 76.3% 48%;
+
+    /* ── Nexus AI brand palette (dark / obsidian) ── */
+    --nx-bg:             #09090b;
+    --nx-bg-secondary:   #111113;
+    --nx-bg-tertiary:    #18181b;
+    --nx-surface:        #1c1c1f;
+    --nx-border:         #27272a;
+    --nx-border-strong:  #3f3f46;
+
+    --nx-text-primary:   #fafafa;
+    --nx-text-secondary: #a1a1aa;
+    --nx-text-muted:     #52525b;
+
+    --nx-accent:         #3b82f6;
+    --nx-accent-hover:   #60a5fa;
+    --nx-accent-subtle:  #1e3a5f;
+
+    --nx-success:        #22c55e;
+    --nx-success-subtle: #052e16;
+    --nx-warning:        #f59e0b;
+    --nx-warning-subtle: #1c1400;
+    --nx-danger:         #ef4444;
+    --nx-danger-subtle:  #2d0a0a;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    /* FIX 1: Inter replaces the default monospace/system stack used across Nexus AI */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "rlig" 1, "calt" 1, "cv02" 1, "cv03" 1, "cv04" 1;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Heading scale ── */
+  /* FIX 2: Removed implicit ALL-CAPS styling. Use sentence case in JSX. */
+  h1 { font-size: 1.75rem; font-weight: 600; line-height: 1.25; letter-spacing: -0.02em; }
+  h2 { font-size: 1.25rem; font-weight: 500; line-height: 1.35; letter-spacing: -0.01em; }
+  h3 { font-size: 1rem;    font-weight: 500; line-height: 1.4; }
+  h4 { font-size: 0.875rem;font-weight: 500; line-height: 1.5; }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar        { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track  { background: transparent; }
+  ::-webkit-scrollbar-thumb  { background: var(--nx-border-strong); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--nx-text-muted); }
+}
+
+/* ════════════════════════════════════════════════
+   NEXUS AI COMPONENT UTILITIES
+   ════════════════════════════════════════════════ */
+@layer components {
+
+  /* ── Section labels (replaces ALL CAPS pattern) ── */
+  /* FIX 3: .nx-label is the correct replacement for uppercase monospace headings.
+     Use <p className="nx-label"> instead of <p style="text-transform:uppercase"> */
+  .nx-label {
+    font-size: 0.6875rem;   /* 11px */
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--nx-text-muted);
+  }
+
+  /* ── Surface cards ── */
+  .nx-card {
+    background: var(--nx-surface);
+    border: 1px solid var(--nx-border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+
+  .nx-card-hover {
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .nx-card-hover:hover {
+    border-color: var(--nx-border-strong);
+    background: var(--nx-bg-secondary);
+  }
+
+  /* ── Keyword chips ── */
+  /* FIX 4: Matched vs missing chips now use color + icon, not color alone */
+  .nx-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .nx-chip-matched {
+    background: var(--nx-success-subtle);
+    color: var(--nx-success);
+    border-color: color-mix(in srgb, var(--nx-success) 25%, transparent);
+  }
+
+  .nx-chip-missing {
+    background: var(--nx-danger-subtle);
+    color: var(--nx-danger);
+    border-color: color-mix(in srgb, var(--nx-danger) 25%, transparent);
+  }
+
+  /* ── Score metric card ── */
+  .nx-metric {
+    background: var(--nx-bg-tertiary);
+    border-radius: var(--radius);
+    padding: 0.875rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nx-metric-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--nx-text-secondary);
+  }
+
+  .nx-metric-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--nx-text-primary);
+    line-height: 1;
+  }
+
+  /* ── Progress bar ── */
+  /* FIX 5: Progress bars now include aria attributes for screen readers (add in JSX) */
+  .nx-progress-track {
+    width: 100%;
+    height: 6px;
+    background: var(--nx-bg-tertiary);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .nx-progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  .nx-progress-fill-success { background: var(--nx-success); }
+  .nx-progress-fill-warning { background: var(--nx-warning); }
+  .nx-progress-fill-danger  { background: var(--nx-danger);  }
+  .nx-progress-fill-accent  { background: var(--nx-accent);  }
+
+  /* ── Primary CTA button ── */
+  /* FIX 6: Sticky CTA helper — pair with position: sticky; bottom: 0 in the parent */
+  .nx-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0.6875rem 1.5rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: var(--nx-accent);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    width: 100%;
+  }
+
+  .nx-cta:hover  { background: var(--nx-accent-hover); }
+  .nx-cta:active { transform: scale(0.98); }
+  .nx-cta:focus-visible {
+    outline: 2px solid var(--nx-accent);
+    outline-offset: 2px;
+  }
+
+  /* ── Step indicator ── */
+  .nx-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border: 1px solid var(--nx-border);
+    color: var(--nx-text-muted);
+    background: transparent;
+    transition: all 0.15s;
+  }
+
+  .nx-step-active {
+    background: var(--nx-accent-subtle);
+    border-color: var(--nx-accent);
+    color: var(--nx-accent);
+  }
+
+  .nx-step-done {
+    background: var(--nx-success-subtle);
+    border-color: color-mix(in srgb, var(--nx-success) 40%, transparent);
+    color: var(--nx-success);
+  }
+
+  /* ── Sidebar nav item ── */
+  .nx-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: calc(var(--radius) - 2px);
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--nx-text-secondary);
+    text-decoration: none;
+    transition: background 0.12s, color 0.12s;
+    cursor: pointer;
+  }
+
+  .nx-nav-item:hover {
+    background: var(--nx-bg-tertiary);
+    color: var(--nx-text-primary);
+  }
+
+  .nx-nav-item-active {
+    background: var(--nx-surface);
+    color: var(--nx-text-primary);
+    font-weight: 500;
+  }
+
+  /* ── Focus ring (accessibility) ── */
+  /* FIX 7: Apply .nx-focus to every interactive element */
+  .nx-focus:focus-visible {
+    outline: 2px solid var(--nx-accent);
+    outline-offset: 2px;
+    border-radius: calc(var(--radius) - 2px);
+  }
+}
+
+/* ════════════════════════════════════════════════
+   TAILWIND HARDCODE OVERRIDES
+   Replace bg-[#09090b] pattern with semantic tokens
+   ════════════════════════════════════════════════ */
+@layer utilities {
+  .bg-nx-base      { background-color: var(--nx-bg); }
+  .bg-nx-secondary { background-color: var(--nx-bg-secondary); }
+  .bg-nx-tertiary  { background-color: var(--nx-bg-tertiary); }
+  .bg-nx-surface   { background-color: var(--nx-surface); }
+
+  .border-nx        { border-color: var(--nx-border); }
+  .border-nx-strong { border-color: var(--nx-border-strong); }
+
+  .text-nx-primary   { color: var(--nx-text-primary); }
+  .text-nx-secondary { color: var(--nx-text-secondary); }
+  .text-nx-muted     { color: var(--nx-text-muted); }
+  .text-nx-accent    { color: var(--nx-accent); }
+}
