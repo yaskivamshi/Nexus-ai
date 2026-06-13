@@ -4,7 +4,8 @@ import axios from 'axios'
 import { supabase } from '../lib/supabase'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  // Tries to read the environment variable first; falls back to your live server if it's not set
+  baseURL: import.meta.env.VITE_API_URL || "https://nexus-ai-api-gamma.vercel.app",
   headers: { 'Content-Type': 'application/json' },
 })
 
