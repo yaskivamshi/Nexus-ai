@@ -11,10 +11,16 @@ app = FastAPI(
     docs_url="/docs",
 )
 
-# Open CORS policy for clean installation matching
+# Explicitly authorized domain origins list for production deployment match
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://nexus-ai-orr3.vercel.app",  # Your production frontend domain link
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows ALL origins temporarily so we can link up with zero blockage!
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
