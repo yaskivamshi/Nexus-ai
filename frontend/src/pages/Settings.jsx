@@ -52,9 +52,8 @@ export default function Settings() {
     async function fetchLiveCatalog() {
       setCatalogLoading(true)
       try {
-        const { data } = await api.get('/api/chat/live-catalog')
-        const res = await fetch('http://localhost:8000/api/chat/live-catalog')
-        const data = await res.json()
+        const { data: catalogData } = await api.get('/api/chat/live-catalog')
+
         
         if (data.success && data.models) {
           const nvidiaItems = data.models
