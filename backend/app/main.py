@@ -11,6 +11,7 @@ app = FastAPI(
     docs_url="/docs",
 )
 
+# CORS configuration — supports main production domain, previews, and local setups
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -22,13 +23,14 @@ app.add_middleware(
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ],
-    allow_origin_regex="https://nexus-ai-.*\\.vercel\\.app",
+    allow_origin_regex=r"https://nexus-ai-.*\.vercel\.app",  # Securely handles all varying Vercel subdomains
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],
 )
 
+# Application core route mounting
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(pdf.router, prefix="/api/pdf", tags=["pdf"])
 app.include_router(resume.router, prefix="/api/resume", tags=["resume"])
