@@ -10,7 +10,7 @@ from fastapi import APIRouter, UploadFile, File, HTTPException, Form
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from app.services.rag_service import rag_service
+#from app.services.rag_service import rag_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

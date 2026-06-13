@@ -13,7 +13,11 @@ import io
 import logging
 from typing import List, Tuple, AsyncGenerator, Dict, Set
 
-import spacy
+#import spacy
+try:
+    import spacy
+except ImportError:
+    spacy = None
 from sklearn.feature_extraction.text import TfidfVectorizer
 from pypdf import PdfReader
 from reportlab.lib.pagesizes import letter
@@ -33,11 +37,21 @@ from app.models.schemas import Message
 logger = logging.getLogger(__name__)
 
 # Load spaCy English model safely
+# Optional spaCy support
 try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    logger.warning("spaCy model not found. Run: python -m spacy download en_core_web_sm")
+    import spacy
+
+    try:
+        nlp = spacy.load("en_core_web_sm")
+    except Exception:
+        logger.warning("spaCy model unavailable. Continuing without NLP model.")
+        nlp = None
+
+except ImportError:
+    logger.warning("spaCy not installed. ATS analysis will use TF-IDF only.")
+    spacy = None
     nlp = None
+``
 
 
 # Core professional English stop words to wipe from keyphrase generation pipelines
