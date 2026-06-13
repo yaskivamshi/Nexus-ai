@@ -19,8 +19,12 @@ export function useStream() {
       const { data } = await supabase.auth.getSession()
       const token = data.session?.access_token
 
-      // FIXED: Added fallback URL to guarantee server connections if build variables are cached
-      const baseUrl = import.meta.env.VITE_API_URL || "https://nexus-ai-api-gamma.vercel.app"
+      // CLEANUP: Rely strictly on our clean incoming environment variable setup
+      const baseUrl = import.meta.env.VITE_API_URL
+
+      if (!baseUrl) {
+        throw new Error("VITE_API_URL environment variable is missing or empty!")
+      }
 
       const response = await fetch(`${baseUrl}/api/chat/stream`, {
         method: 'POST',
