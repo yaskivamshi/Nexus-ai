@@ -1,6 +1,6 @@
-
 // frontend/src/hooks/useStream.js
 import { useState, useRef, useCallback } from 'react'
+import { supabase } from '../lib/supabase' // FIXED: Added your Supabase client instance import
 
 // CRITICAL FIX: Explicitly adding 'export' fixes the "does not provide an export named 'useStream'" error!
 export function useStream() {
@@ -15,14 +15,25 @@ export function useStream() {
     setIsStreaming(true)
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat/stream`, {
+      // FIXED: Dynamically fetch your active user session token before generating the request
+      const { data } = await supabase.auth.getSession()
+      const token = data.session?.access_token
+
+      // FIXED: Added fallback URL to guarantee server connections if build variables are cached
+      const baseUrl = import.meta.env.VITE_API_URL || "https://nexus-ai-api-gamma.vercel.app"
+
+      const response = await fetch(`${baseUrl}/api/chat/stream`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          // FIXED: Appends your Supabase user verification key to clear backend authentication locks
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
         body: JSON.stringify({ messages, model }),
         signal: controllerRef.current.signal,
       })
 
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      if (!response.ok) throw new Error(`HTTP ${response.ok ? 'OK' : response.status}`)
 
       // Read the stream chunk by chunk
       const reader = response.body.getReader()
