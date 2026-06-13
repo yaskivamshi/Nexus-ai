@@ -13,8 +13,7 @@ from pathlib import Path
 import chromadb
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
-from pypdf import PdfReader
+from langchain_community.embeddings import HuggingFaceEmbeddingsfrom pypdf import PdfReader
 
 from app.core.config import settings
 from app.services.ai_service import ai_service
