@@ -9,6 +9,7 @@ import {
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { useChatStore } from '../store/chatStore'
+import api from '../api/client' // FIXED: Added your preconfigured API interceptor client
 
 // Static base configurations that aren't parsed dynamically from cloud discovery APIs
 const STATIC_GROUPS = [
@@ -41,8 +42,8 @@ export default function ModelSelector() {
     async function fetchLiveModels() {
       setLoading(true)
       try {
-        const res = await fetch('http://localhost:8000/api/chat/live-catalog')
-        const data = await res.json()
+        // FIXED: Swapped raw fetch to use your centralized api client setup
+        const { data } = await api.get('/api/chat/live-catalog')
         
         if (data.success && data.models) {
           // Separate and bundle incoming items by provider tags
